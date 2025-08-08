@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Svatební web – Alice & Bob</title>
+  <meta name="description" content="Přidejte se k nám na svatební den Alice & Bob. Najdete zde program, místo, ubytování, RSVP a fotogalerii.">
+
+  <!-- OG / social -->
+  <meta property="og:title" content="Svatební den – Alice & Bob">
+  <meta property="og:description" content="Vše důležité o naší svatbě: kdy, kde, program, ubytování, dary a RSVP.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="img/og-cover.jpg"> <!-- TODO: nahraďte -->
+  <meta property="og:url" content="https://vase-domena.cz"> <!-- TODO: nahraďte -->
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#fffdf9;
+      --paper:#ffffff;
+      --ink:#1d1d1f;
+      --muted:#666872;
+      --brand:#8b6b5e;      /* šampaň */
+      --brand-2:#c9b3a7;    /* světlejší akcent */
+      --accent:#7aa39c;     /* šalvěj */
+      --ring: 0 0 0 3px rgba(123, 163, 156, .2);
+      --radius:16px;
+      --shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+    img{max-width:100%;display:block}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+    header.nav{
+      position:sticky;top:0;background:rgba(255,255,255,.8);backdrop-filter:saturate(180%) blur(12px);
+      border-bottom:1px solid #eee; z-index:50;
+    }
+    .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .brand{font-family:"Playfair Display",serif;font-weight:700;letter-spacing:.5px}
+    .nav a{color:var(--ink)}
+    .menu{display:flex;gap:18px;font-size:14px}
+    .hero{
+      background:linear-gradient(180deg, #ffffff, #fff6ef);
+      padding:72px 0 36px; text-align:center;
+    }
+    .hero .names{font-family:"Playfair Display",serif;font-size:48px;line-height:1.2;margin:10px 0;color:var(--brand)}
+    .hero .date{color:var(--muted);font-weight:500}
+    .card{
+      background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow);
+      padding:28px; margin:18px 0;
+    }
+    .grid{display:grid;gap:20px}
+    @media(min-width:900px){ .grid-2{grid-template-columns:1fr 1fr} .grid-3{grid-template-columns:repeat(3,1fr)} }
+    .btn{
+      display:inline-flex;align-items:center;gap:8px; background:var(--accent); color:white; padding:12px 18px; border-radius:12px;
+      border:none; cursor:pointer; font-weight:600; box-shadow:0 6px 16px rgba(122,163,156,.25);
+    }
+    .btn:hover{filter:brightness(1.05)}
+    .btn.outline{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+    h2{font-family:"Playfair Display",serif;font-weight:700;color:var(--brand);margin:8px 0 12px}
+    h3{margin:0 0 8px}
+    .muted{color:var(--muted)}
+    .pill{display:inline-block;background:#f3efec;color:#6a5a52;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:600}
+    .timeline{position:relative;padding-left:22px}
+    .timeline::before{content:"";position:absolute;left:9px;top:0;bottom:0;width:2px;background:#eee}
+    .timeline .item{position:relative;margin:14px 0}
+    .timeline .item::before{content:"";position:absolute;left:-2px;top:.5em;width:12px;height:12px;background:var(--brand-2);border-radius:50%;box-shadow:0 0 0 3px #f5eee9}
+    .faq details{border:1px solid #eee;border-radius:10px;padding:12px 14px;background:#fff}
+    .faq details+details{margin-top:10px}
+    .faq summary{cursor:pointer;font-weight:600}
+    form .row{display:grid;gap:12px}
+    @media(min-width:700px){ form .row{grid-template-columns:1fr 1fr} }
+    input,select,textarea{
+      width:100%;padding:12px 14px;border:1px solid #e6e6e6;border-radius:12px;background:#fff;
+      outline: none; font:inherit
+    }
+    input:focus,select:focus,textarea:focus{box-shadow:var(--ring);border-color:var(--accent)}
+    .gallery{columns:1;column-gap:16px}
+    @media(min-width:600px){.gallery{columns:2}}
+    @media(min-width:1000px){.gallery{columns:3}}
+    .gallery a{display:inline-block;position:relative;margin:0 0 16px;border-radius:12px;overflow:hidden}
+    .gallery img{width:100%;height:auto;transition:transform .3s ease;will-change:transform}
+    .gallery a:hover img{transform:scale(1.02)}
+    .lightbox{
+      position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:1000;
+    }
+    .lightbox.open{display:flex}
+    .lightbox img{max-width:90vw;max-height:85vh;border-radius:8px}
+    .lightbox .close{position:absolute;top:20px;right:20px;background:#ffffff; color:#111; border:none;border-radius:999px;padding:8px 12px;font-weight:700;cursor:pointer}
+    .countdown{display:flex;gap:14px;justify-content:center;margin-top:10px}
+    .countdown .box{background:#fff;border:1px solid #eee;border-radius:10px;padding:8px 12px;min-width:70px}
+    footer{padding:40px 0;color:var(--muted);text-align:center}
+    .map-embed{border:0;width:100%;height:320px;border-radius:12px;box-shadow:var(--shadow)}
+    .section{padding:22px 0}
+    .sticky-cta{position:fixed;bottom:16px;right:16px;z-index:60}
+    .sticky-cta .btn{box-shadow:0 12px 30px rgba(122,163,156,.35)}
+    /* print-friendly */
+    @media print{
+      header.nav,.sticky-cta,.lightbox{display:none !important}
+      .card{box-shadow:none;border:1px solid #eee}
+    }
+  </style>
+
+  <!-- Schema.org structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WeddingEvent",
+    "name": "Svatba Alice & Bob",
+    "startDate": "2025-09-13T13:30:00+02:00",
+    "endDate": "2025-09-13T23:59:00+02:00",
+    "eventStatus": "https://schema.org/EventScheduled",
+    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+    "location": {
+      "@type": "Place",
+      "name": "Zámecká kaple a stodola",
+      "address": "Náves 1, 330 27 Vochov, Česko"
+    },
+    "organizer": {
+      "@type": "Person",
+      "name": "Alice & Bob"
+    },
+    "image": ["https://vase-domena.cz/img/og-cover.jpg"]
+  }
+  </script>
+</head>
+<body>
+  <header class="nav">
+    <div class="container wrap">
+      <div class="brand">Alice & Bob</div>
+      <nav class="menu">
+        <a href="#o-nas">O nás</a>
+        <a href="#kdy-kde">Kdy & kde</a>
+        <a href="#program">Program</a>
+        <a href="#ubytovani">Ubytování</a>
+        <a href="#dary">Dary</a>
+        <a href="#rsvp">RSVP</a>
+        <a href="#galerie">Galerie</a>
+        <a href="#faq">FAQ</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <span class="pill">Bereme se</span>
+      <h1 class="names">Alice & Bob</h1>
+      <div class="date">13. září 2025 • 13:30 • Vochov</div>
+      <div class="countdown" id="countdown" aria-label="Odpočet do svatby"></div>
+      <div style="margin-top:16px">
+        <a href="#rsvp" class="btn">Potvrdit účast</a>
+        <a href="#kdy-kde" class="btn outline">Detaily místa</a>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+    <section id="o-nas" class="section grid grid-2">
+      <div class="card">
+        <h2>O nás</h2>
+        <p>Ahoj, jsme Alice a Bob. Milujeme procházky, dobré jídlo a dlouhé snídaně na slunci. Po letech společných dobrodružství se těšíme, že s vámi oslavíme náš velký den.</p>
+        <p class="muted">Vaše přítomnost je pro nás ten největší dar.</p>
+      </div>
+      <div class="card">
+        <h2>Jak to začalo</h2>
+        <p>Potkali jsme se v kavárně na rohu. Jeden úsměv, dva hrnky cappuccina a zbytek je historie.</p>
+        <p class="muted">Sdílíme pár fotek níže v galerii.</p>
+      </div>
+    </section>
+
+    <section id="kdy-kde" class="section">
+      <div class="card">
+        <h2>Kdy a kde</h2>
+        <div class="grid grid-3">
+          <div>
+            <h3>Obřad</h3>
+            <p><strong>13:30</strong> — Zámecká kaple</p>
+            <p class="muted">Prosíme, dorazte alespoň 20 minut předem.</p>
+          </div>
+          <div>
+            <h3>Hostina</h3>
+            <p><strong>15:00</strong> — Stodola u zámku</p>
+            <p class="muted">Slavnostní přípitek a raut.</p>
+          </div>
+          <div>
+            <h3>Afterparty</h3>
+            <p><strong>20:00</strong> — Taneční parket</p>
+            <p class="muted">Hudba, dort a radost.</p>
+          </div>
+        </div>
+        <div class="grid grid-2" style="margin-top:16px">
+          <div>
+            <h3>Adresa</h3>
+            <p>Zámecký areál, Náves 1, 330 27 Vochov</p>
+            <p><a href="https://maps.google.com/?q=Vochov" target="_blank" rel="noopener">Otevřít v Mapách</a></p>
+            <p class="muted">Parkování je možné na návsi a za stodolou. Označení bude na místě.</p>
+          </div>
+          <div>
+            <iframe class="map-embed"
+              src="https://www.google.com/maps?q=Vochov&output=embed"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Mapa místa"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="program" class="section">
+      <div class="card">
+        <h2>Program dne</h2>
+        <div class="timeline">
+          <div class="item"><strong>12:45</strong> — Sraz hostů u kaple</div>
+          <div class="item"><strong>13:30</strong> — Svatební obřad</div>
+          <div class="item"><strong>14:15</strong> — Společné focení</div>
+          <div class="item"><strong>15:00</strong> — Hostina & přípitky</div>
+          <div class="item"><strong>17:30</strong> — Krájení dortu</div>
+          <div class="item"><strong>20:00</strong> — První tanec & party</div>
+          <div class="item"><strong>23:59</strong> — Poslední písnička</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ubytovani" class="section">
+      <div class="card">
+        <h2>Ubytování</h2>
+        <div class="grid grid-3">
+          <div>
+            <h3>Penzion Na návsi</h3>
+            <p>5 min pěšky • 8 pokojů</p>
+            <p><a href="#" aria-disabled="true">penzionnavsi.cz</a> • +420 000 000 000</p>
+          </div>
+          <div>
+            <h3>Hotel Plzeň</h3>
+            <p>15 min autem • snídaně v ceně</p>
+            <p><a href="#" aria-disabled="true">hotelplzen.cz</a> • +420 000 000 000</p>
+          </div>
+          <div>
+            <h3>Ubytování u Aničky</h3>
+            <p>10 min autem • 4 pokoje</p>
+            <p><a href="#" aria-disabled="true">uaničky.cz</a> • +420 000 000 000</p>
+          </div>
+        </div>
+        <p class="muted" style="margin-top:8px">Pozn.: Uveďte heslo “Svatba Alice & Bob” – mají pro nás vyhrazené pokoje do 1. 8. 2025.</p>
+      </div>
+    </section>
+
+    <section id="dary" class="section">
+      <div class="card">
+        <h2>Dary</h2>
+        <p>Největším darem je vaše přítomnost. Pokud byste nás i tak chtěli potěšit, budeme vděční za příspěvek do společného prasátka.</p>
+        <details style="margin-top:10px">
+          <summary>Chcete poslat dárek předem?</summary>
+          <p class="muted">Účet: 000000-0000000000/0000 • Do poznámky prosím uveďte své jméno.</p>
+        </details>
+      </div>
+    </section>
+
+    <section id="dresscode" class="section">
+      <div class="card">
+        <h2>Dress code</h2>
+        <p>Pastelové tóny, pohodlné boty na trávu vítány. Prosíme, vyhněte se bílé a krémové.</p>
+      </div>
+    </section>
+
+    <section id="rsvp" class="section grid grid-2">
+      <div class="card">
+        <h2>RSVP</h2>
+        <p>Dejte nám prosím vědět do <strong>1. srpna 2025</strong>, zda dorazíte a v kolika.</p>
+        <form id="rsvpForm" novalidate>
+          <!-- Pokud chcete skutečné odesílání, můžete nastavit action na Formspree/Netlify nebo mailto: -->
+          <!-- <form action="https://formspree.io/f/VAŠE-ID" method="POST"> -->
+          <div class="row">
+            <div>
+              <label for="jmeno">Jméno a příjmení</label>
+              <input id="jmeno" name="jmeno" required placeholder="Jana Nováková" />
+            </div>
+            <div>
+              <label for="email">E‑mail</label>
+              <input id="email" name="email" type="email" required placeholder="jana@example.com" />
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="pocet">Počet osob</label>
+              <select id="pocet" name="pocet" required>
+                <option value="">Vyberte</option>
+                <option>1</option><option>2</option><option>3</option><option>4+</option>
+              </select>
+            </div>
+            <div>
+              <label for="jidlo">Stravování</label>
+              <select id="jidlo" name="jidlo">
+                <option>Bez preference</option>
+                <option>Vegetarián</option>
+                <option>Veganská</option>
+                <option>Bezlepková</option>
+                <option>Alergie (napište)</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label for="zprava">Poznámka / alergie</label>
+            <textarea id="zprava" name="zprava" rows="4" placeholder="Napište nám cokoliv důležitého…"></textarea>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;margin-top:12px">
+            <button class="btn" type="submit">Odeslat RSVP</button>
+            <span id="rsvpStatus" class="muted" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+      </div>
+      <div class="card">
+        <h2>Kontakty pro dotazy</h2>
+        <p><strong>Svědkyně – Klára</strong><br>+420 777 000 000<br><a href="mailto:klara@example.com">klara@example.com</a></p>
+        <p><strong>Svědek – Tomáš</strong><br>+420 777 111 111<br><a href="mailto:tomas@example.com">tomas@example.com</a></p>
+        <p class="muted">V den svatby raději volejte – e‑maily nemusíme stíhat.</p>
+      </div>
+    </section>
+
+    <section id="galerie" class="section">
+      <div class="card">
+        <h2>Fotogalerie</h2>
+        <p class="muted">Kliknutím na fotku ji otevřete ve velkém.</p>
+        <div class="gallery" id="gallery">
+          <!-- TODO: Nahraďte vlastními soubory v /img -->
+          <a href="img/gal-1.jpg"><img loading="lazy" src="img/gal-1.jpg" alt="Alice a Bob – zásnuby"></a>
+          <a href="img/gal-2.jpg"><img loading="lazy" src="img/gal-2.jpg" alt="Procházka v parku"></a>
+          <a href="img/gal-3.jpg"><img loading="lazy" src="img/gal-3.jpg" alt="Společná snídaně"></a>
+          <a href="img/gal-4.jpg"><img loading="lazy" src="img/gal-4.jpg" alt="Západ slunce"></a>
+          <a href="img/gal-5.jpg"><img loading="lazy" src="img/gal-5.jpg" alt="Káva pro dva"></a>
+          <a href="img/gal-6.jpg"><img loading="lazy" src="img/gal-6.jpg" alt="Cestování"></a>
+          <a href="img/gal-7.jpg"><img loading="lazy" src="img/gal-7.jpg" alt="Léto u vody"></a>
+          <a href="img/gal-8.jpg"><img loading="lazy" src="img/gal-8.jpg" alt="Smích je základ"></a>
+          <a href="img/gal-9.jpg"><img loading="lazy" src="img/gal-9.jpg" alt="Město večer"></a>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="section">
+      <div class="card faq">
+        <h2>Časté dotazy</h2>
+        <details>
+          <summary>Můžeme vzít děti?</summary>
+          <p>Máme rádi děti, ale tento den bychom rádi pojali jako “bez dětí”. Děkujeme za pochopení.</p>
+        </details>
+        <details>
+          <summary>Je zajištěna doprava?</summary>
+          <p>Ano, po obřadu pojede shuttle z kaple ke stodole a pozdě večer zpět do Plzně.</p>
+        </details>
+        <details>
+          <summary>Parkování</summary>
+          <p>Parkoviště je označené u stodoly. Prosíme, neparkujte na trávnících u kaple.</p>
+        </details>
+      </div>
+    </section>
+
+    <section id="kontakt" class="section">
+      <div class="card">
+        <h2>Kontakt</h2>
+        <p>Máte otázky? Napište nám na <a href="mailto:alice.a.bob@example.com">alice.a.bob@example.com</a> nebo zavolejte +420 777 222 333.</p>
+      </div>
+    </section>
+  </main>
+
+  <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
+    <button class="close" aria-label="Zavřít fotku">✕</button>
+    <img alt="">
+  </div>
+
+  <div class="sticky-cta">
+    <a class="btn" href="#rsvp">Potvrdit účast</a>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 Alice & Bob • Těšíme se na vás!</p>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const to = document.querySelector(a.getAttribute('href'));
+        if(!to) return;
+        e.preventDefault();
+        to.scrollIntoView({behavior:'smooth', block:'start'});
+        history.replaceState(null, '', a.getAttribute('href'));
+      });
+    });
+
+    // Countdown
+    const targetDate = new Date('2025-09-13T13:30:00+02:00'); // TODO: upravte datum/čas
+    const cd = document.getElementById('countdown');
+    const fmt = (n)=>String(n).padStart(2,'0');
+    function tick(){
+      const now = new Date();
+      const diff = targetDate - now;
+      if(diff <= 0){ cd.textContent = 'Je to tady!'; clearInterval(tmr); return; }
+      const d = Math.floor(diff/86400000);
+      const h = Math.floor((diff%86400000)/3600000);
+      const m = Math.floor((diff%3600000)/60000);
+      const s = Math.floor((diff%60000)/1000);
+      cd.innerHTML = `
+        <div class="box"><div><strong>${fmt(d)}</strong></div><div class="muted">dní</div></div>
+        <div class="box"><div><strong>${fmt(h)}</strong></div><div class="muted">hod</div></div>
+        <div class="box"><div><strong>${fmt(m)}</strong></div><div class="muted">min</div></div>
+        <div class="box"><div><strong>${fmt(s)}</strong></div><div class="muted">s</div></div>`;
+    }
+    const tmr = setInterval(tick,1000); tick();
+
+    // Lightbox
+    const lb = document.getElementById('lightbox');
+    const lbImg = lb.querySelector('img');
+    document.getElementById('gallery').addEventListener('click', e=>{
+      const a = e.target.closest('a'); if(!a) return;
+      e.preventDefault();
+      lbImg.src = a.getAttribute('href');
+      lb.classList.add('open');
+    });
+    lb.addEventListener('click', e=>{
+      if(e.target === lb || e.target.classList.contains('close')) lb.classList.remove('open');
+    });
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') lb.classList.remove('open'); });
+
+    // RSVP form (demo)
+    const form = document.getElementById('rsvpForm');
+    const status = document.getElementById('rsvpStatus');
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      status.textContent = '';
+      const data = Object.fromEntries(new FormData(form).entries());
+      // jednoduchá validace
+      if(!data.jmeno || !data.email){ status.textContent = 'Vyplňte prosím jméno a e‑mail.'; return; }
+      // DEMO: odešleme mailto: fallback
+      const subject = encodeURIComponent('RSVP – ' + data.jmeno);
+      const body = encodeURIComponent(
+        `Jméno: ${data.jmeno}\nE‑mail: ${data.email}\nPočet: ${data.pocet}\nJídlo: ${data.jidlo}\nPoznámka: ${data.zprava || ''}`
+      );
+      // TODO: nahraďte vlastní e‑mail
+      window.location.href = `mailto:alice.a.bob@example.com?subject=${subject}&body=${body}`;
+      status.textContent = 'Děkujeme! Pokud se neotevřel e‑mailový klient, napište nám prosím ručně.';
+      form.reset();
+    });
+  </script>
+</body>
+</html>
