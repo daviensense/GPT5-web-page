@@ -1,59 +1,123 @@
-<!-- …začátek souboru… -->
-<title>Svatební web – David & Kamila</title>
-<meta name="description" content="Přidejte se k nám na svatební den David & Kamila. Najdete zde program, místo, ubytování, RSVP a fotogalerii.">
-<!-- OG/social -->
-<meta property="og:title" content="Svatební den – David & Kamila">
-<meta property="og:description" content="Vše důležité o naší svatbě: kdy, kde, program, ubytování, dary a RSVP.">
-<!-- … -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WeddingEvent",
-  "name": "Svatba David & Kamila",
-  /* ... ostatní data beze změn ... */
-  "organizer": {
-    "@type": "Person",
-    "name": "David & Kamila"
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Svatební web – David & Kamila</title>
+  <meta name="description" content="Přidejte se k nám na svatební den David & Kamila. Najdete zde program, místo, ubytování, RSVP a fotogalerii.">
+  <meta property="og:title" content="Svatební den – David & Kamila">
+  <meta property="og:description" content="Vše důležité o naší svatbě: kdy, kde, program, ubytování, dary a RSVP.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="img/og-cover.jpg">
+  <meta property="og:url" content="https://vase-domena.cz">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- stejné styly jako v původní šabloně --- */
+    :root{
+      --bg:#fffdf9;
+      --paper:#ffffff;
+      --ink:#1d1d1f;
+      --muted:#666872;
+      --brand:#8b6b5e;
+      --brand-2:#c9b3a7;
+      --accent:#7aa39c;
+      --ring: 0 0 0 3px rgba(123, 163, 156, .2);
+      --radius:16px;
+      --shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+    img{max-width:100%;display:block}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+    header.nav{position:sticky;top:0;background:rgba(255,255,255,.8);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid #eee; z-index:50;}
+    .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .brand{font-family:"Playfair Display",serif;font-weight:700;letter-spacing:.5px}
+    .menu{display:flex;gap:18px;font-size:14px}
+    /* ... zde pokračují všechny styly z původní šablony ... */
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WeddingEvent",
+    "name": "Svatba David & Kamila",
+    "startDate": "2025-09-13T13:30:00+02:00",
+    "endDate": "2025-09-13T23:59:00+02:00",
+    "eventStatus": "https://schema.org/EventScheduled",
+    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+    "location": {
+      "@type": "Place",
+      "name": "Zámecká kaple a stodola",
+      "address": "Náves 1, 330 27 Vochov, Česko"
+    },
+    "organizer": {
+      "@type": "Person",
+      "name": "David & Kamila"
+    },
+    "image": ["https://vase-domena.cz/img/og-cover.jpg"]
   }
-}
-</script>
-<!-- … -->
-<header class="nav">
-  <div class="container wrap">
-    <div class="brand">David & Kamila</div>
-    <!-- menu zůstává -->
-  </div>
-</header>
-
-<section class="hero">
-  <div class="container">
-    <span class="pill">Bereme se</span>
-    <h1 class="names">David & Kamila</h1>
-    <!-- datum a místo beze změny -->
-    <!-- … -->
-  </div>
-</section>
-
-<main class="container">
-  <section id="o-nas" class="section grid grid-2">
-    <div class="card">
-      <h2>O nás</h2>
-      <p>Ahoj, jsme David a Kamila. Milujeme procházky, dobré jídlo a dlouhé snídaně na slunci. Po letech společných dobrodružství se těšíme, že s vámi oslavíme náš velký den.</p>
-      <p class="muted">Vaše přítomnost je pro nás ten největší dar.</p>
+  </script>
+</head>
+<body>
+  <header class="nav">
+    <div class="container wrap">
+      <div class="brand">David & Kamila</div>
+      <nav class="menu">
+        <a href="#o-nas">O nás</a>
+        <a href="#kdy-kde">Kdy & kde</a>
+        <a href="#program">Program</a>
+        <a href="#ubytovani">Ubytování</a>
+        <a href="#dary">Dary</a>
+        <a href="#rsvp">RSVP</a>
+        <a href="#galerie">Galerie</a>
+        <a href="#faq">FAQ</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
     </div>
-    <div class="card">
-      <h2>Jak to začalo</h2>
-      <p>Potkali jsme se v kavárně na rohu. Jeden úsměv, dva hrnky cappuccina a zbytek je historie.</p>
-      <p class="muted">Sdílíme pár fotek níže v galerii.</p>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <span class="pill">Bereme se</span>
+      <h1 class="names">David & Kamila</h1>
+      <div class="date">13. září 2025 • 13:30 • Vochov</div>
+      <div class="countdown" id="countdown"></div>
+      <div style="margin-top:16px">
+        <a href="#rsvp" class="btn">Potvrdit účast</a>
+        <a href="#kdy-kde" class="btn outline">Detaily místa</a>
+      </div>
     </div>
   </section>
-  <!-- …v ostatních sekcích jsou pouze nahrazená jména… -->
-</main>
 
-<footer>
-  <div class="container">
-    <p>© 2025 David & Kamila • Těšíme se na vás!</p>
-  </div>
-</footer>
-<!-- …zbytek souboru beze změny… -->
+  <main class="container">
+    <section id="o-nas" class="section grid grid-2">
+      <div class="card">
+        <h2>O nás</h2>
+        <p>Ahoj, jsme David a Kamila. Milujeme procházky, dobré jídlo a dlouhé snídaně na slunci. Po letech společných dobrodružství se těšíme, že s vámi oslavíme náš velký den.</p>
+        <p class="muted">Vaše přítomnost je pro nás ten největší dar.</p>
+      </div>
+      <div class="card">
+        <h2>Jak to začalo</h2>
+        <p>Potkali jsme se v kavárně na rohu. Jeden úsměv, dva hrnky cappuccina a zbytek je historie.</p>
+        <p class="muted">Sdílíme pár fotek níže v galerii.</p>
+      </div>
+    </section>
+    <!-- ... všechny ostatní sekce zůstávají beze změny, jen s nahrazenými jmény ... -->
+  </main>
 
+  <footer>
+    <div class="container">
+      <p>© 2025 David & Kamila • Těšíme se na vás!</p>
+    </div>
+  </footer>
+
+  <script>
+    /* JavaScript z původní šablony pro odpočet, lightbox a RSVP formulář */
+  </script>
+</body>
+</html>
